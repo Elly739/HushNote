@@ -85,6 +85,15 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return credentials
     }
 
+    fun updateUserPassword(email: String, salt: String, passwordHash: String): Int {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_SALT, salt)
+            put(COLUMN_PASSWORD_HASH, passwordHash)
+        }
+        return db.update(TABLE_USERS, values, "$COLUMN_EMAIL = ?", arrayOf(email))
+    }
+
     // Notes CRUD Operations with Parameterized Queries
     fun addNote(userEmail: String, title: String, body: String, updatedAt: String): Long {
         val db = this.writableDatabase

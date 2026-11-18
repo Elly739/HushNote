@@ -108,6 +108,7 @@ class MainActivity : ComponentActivity() {
                                     )
                                     1 -> AccountScreen(
                                         userEmail = currentUserEmail!!,
+                                        dbHelper = dbHelper,
                                         onLogout = {
                                             currentUserEmail = null
                                             currentTab = 0
