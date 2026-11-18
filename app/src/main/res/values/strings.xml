@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">HushNote</string>
+    <string name="tagline">Your thoughts. Under lock.</string>
+    <string name="nav_notes">Notes</string>
+    <string name="nav_account">Account</string>
+    <string name="nav_settings">Settings</string>
+
+    <string name="login_title">Welcome Back</string>
+    <string name="signup_title">Create Account</string>
+    <string name="email_hint">Email address</string>
+    <string name="password_hint">Password</string>
+    <string name="login_button">Sign In</string>
+    <string name="signup_button">Create Account</string>
+    <string name="no_account">Don\'t have an account? Sign up</string>
+    <string name="has_account">Already have an account? Sign in</string>
+
+    <string name="settings_title">Application Settings</string>
+    <string name="theme_setting">Theme Mode</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_system">System Default</string>
+    <string name="backup_setting">Secure Backup</string>
+    <string name="backup_button">Backup Notes Now</string>
+    <string name="privacy_title">Privacy Statement</string>
+    <string name="privacy_text">HushNote stores your personal notes securely with encryption at rest and hashed user authentication. Your private thoughts remain strictly yours.</string>
+
+    <string name="account_title">Account Details</string>
+    <string name="network_status">Network Status</string>
+    <string name="telephony_operator">Network Operator</string>
+    <string name="logout_button">Sign Out</string>
+
+    <string name="notes_title">Your Notes</string>
+    <string name="search_hint">Search notes…</string>
+    <string name="daily_inspiration">DAILY INSPIRATION</string>
+    <string name="add_note">Add Note</string>
+    <string name="edit_note">Edit Note</string>
+    <string name="note_title_hint">Note Title</string>
+    <string name="note_body_hint">Write your secure note here…</string>
+    <string name="save_note">Save Note</string>
+    <string name="delete_note">Delete</string>
+    <string name="share_note">Share Note</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- HushNote Brand Palette -->
+    <color name="midnight_navy">#111D2C</color>
+    <color name="warm_amber">#D9A85B</color>
+    <color name="soft_ivory">#F5F3EE</color>
+    <color name="slate_blue">#26384B</color>
+    <color name="muted_sage">#83A995</color>
+    <color name="muted_coral">#C96E69</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
