@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.example.hushnote.ui.theme.HushNoteTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,7 +28,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Apply saved theme preference
         val sharedPrefs = getSharedPreferences("hushnote_prefs", Context.MODE_PRIVATE)
         val savedTheme = sharedPrefs.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         AppCompatDelegate.setDefaultNightMode(savedTheme)
@@ -34,7 +35,15 @@ class MainActivity : ComponentActivity() {
         dbHelper = DatabaseHelper(this)
 
         setContent {
-            HushNoteTheme {
+            var themeMode by remember { mutableStateOf(savedTheme) }
+            val systemDark = isSystemInDarkTheme()
+            val darkTheme = when (themeMode) {
+                AppCompatDelegate.MODE_NIGHT_YES -> true
+                AppCompatDelegate.MODE_NIGHT_NO -> false
+                else -> systemDark
+            }
+
+            HushNoteTheme(darkTheme = darkTheme) {
                 var currentUserEmail by remember { mutableStateOf<String?>(null) }
                 var currentTab by remember { mutableStateOf(0) } // 0: Notes, 1: Account, 2: Settings
                 var editingNoteId by remember { mutableStateOf<Long?>(null) }
@@ -62,7 +71,10 @@ class MainActivity : ComponentActivity() {
                         Scaffold(
                             modifier = Modifier.fillMaxSize(),
                             bottomBar = {
-                                NavigationBar {
+                                NavigationBar(
+                                    containerColor = MaterialTheme.colorScheme.surface,
+                                    tonalElevation = 8.dp
+                                ) {
                                     NavigationBarItem(
                                         icon = { Icon(Icons.Default.Note, contentDescription = "Notes") },
                                         label = { Text("Notes") },
@@ -102,7 +114,10 @@ class MainActivity : ComponentActivity() {
                                         }
                                     )
                                     2 -> SettingsScreen(
-                                        userEmail = currentUserEmail!!
+                                        userEmail = currentUserEmail!!,
+                                        onThemeChanged = { newTheme ->
+                                            themeMode = newTheme
+                                        }
                                     )
                                 }
                             }

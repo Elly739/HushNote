@@ -1,15 +1,21 @@
 package com.example.hushnote
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 
 @Composable
 fun AuthScreen(
@@ -30,16 +36,32 @@ fun AuthScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp),
+                .padding(28.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            // Custom Drawing View Integration (LockShieldCustomView)
+            Box(
+                modifier = Modifier
+                    .size(96.dp)
+                    .clip(RoundedCornerShape(24.dp))
+                    .background(MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center
+            ) {
+                AndroidView(
+                    factory = { context -> LockShieldCustomView(context) },
+                    modifier = Modifier.size(64.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
             Text(
                 text = "HushNote",
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.primary
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             Text(
                 text = "Your thoughts. Under lock.",
                 style = MaterialTheme.typography.bodyMedium,
@@ -53,6 +75,7 @@ fun AuthScreen(
                 onValueChange = { email = it },
                 label = { Text("Email address") },
                 singleLine = true,
+                shape = RoundedCornerShape(14.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -64,24 +87,41 @@ fun AuthScreen(
                 onValueChange = { password = it },
                 label = { Text("Password") },
                 singleLine = true,
+                shape = RoundedCornerShape(14.dp),
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 trailingIcon = {
-                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    TextButton(onClick = { passwordVisible = !passwordVisible }) {
                         Text(if (passwordVisible) "Hide" else "Show")
                     }
                 },
                 modifier = Modifier.fillMaxWidth()
             )
 
-            if (errorMessage != null) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = errorMessage!!, color = MaterialTheme.colorScheme.error)
+            AnimatedVisibility(
+                visible = errorMessage != null,
+                enter = fadeIn(animationSpec = tween(300)) + slideInVertically(initialOffsetY = { -20 }),
+                exit = fadeOut()
+            ) {
+                if (errorMessage != null) {
+                    Column {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = errorMessage!!, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+                    }
+                }
             }
 
-            if (successMessage != null) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = successMessage!!, color = MaterialTheme.colorScheme.primary)
+            AnimatedVisibility(
+                visible = successMessage != null,
+                enter = fadeIn(animationSpec = tween(300)) + slideInVertically(initialOffsetY = { -20 }),
+                exit = fadeOut()
+            ) {
+                if (successMessage != null) {
+                    Column {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = successMessage!!, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodySmall)
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -123,9 +163,10 @@ fun AuthScreen(
                         }
                     }
                 },
-                modifier = Modifier.fillMaxWidth().height(50.dp)
+                shape = RoundedCornerShape(14.dp),
+                modifier = Modifier.fillMaxWidth().height(52.dp)
             ) {
-                Text(if (isSignUp) "Create Account" else "Sign In")
+                Text(if (isSignUp) "Create Account" else "Sign In", style = MaterialTheme.typography.titleMedium)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
